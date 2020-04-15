@@ -11,7 +11,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.MenuItem
 import ca.cshawi.myinventory.boxes.items.Item
-import ca.cshawi.myinventory.items.items.ItemAdapter
+import ca.cshawi.myinventory.boxes.items.ItemAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
 
@@ -77,7 +77,10 @@ class ShowItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     }
 
     override fun onBackPressed() {
-
+        items.forEach {
+            it.changedQuantity = 0
+        }
+        
         val intent = Intent()
         intent.putExtra("position", boxPosition)
         intent.putParcelableArrayListExtra("items", ArrayList(items))

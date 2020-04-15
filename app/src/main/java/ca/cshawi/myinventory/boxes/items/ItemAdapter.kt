@@ -1,4 +1,4 @@
-package ca.cshawi.myinventory.items.items
+package ca.cshawi.myinventory.boxes.items
 
 import android.annotation.SuppressLint
 import android.support.v4.content.ContextCompat
@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
 import ca.cshawi.myinventory.R
-import ca.cshawi.myinventory.boxes.items.Item
 
 class ItemAdapter(val items: MutableList<Item>) :
     RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
@@ -66,7 +65,7 @@ class ItemAdapter(val items: MutableList<Item>) :
                     if (item.changedQuantity < 0) R.color.red else if (item.changedQuantity > 0) R.color.green else R.color.primaryDarkColor
                 )
             )
-            
+
 
             notifyItemChanged(position)
         }
