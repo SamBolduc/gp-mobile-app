@@ -1,5 +1,6 @@
 package ca.cshawi.myinventory
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.design.widget.Snackbar
@@ -8,7 +9,6 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         setSupportActionBar(toolbar)
 
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+            Snackbar.make(view, "TODO: Nouvelle armoire", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
 
@@ -48,6 +48,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         nav_view.setNavigationItemSelectedListener(this)
 
         boxes = mutableListOf();
+        adapter = BoxAdapter(boxes, this)
+
+        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = adapter
 
         val itemTitles: ArrayList<String> =
             arrayListOf("Seringue", "Masque N95", "Pancement", "Gant", "Tylenol", "Advil")
@@ -66,7 +71,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     "Une description de cette armoire",
                     Random.nextInt(1, 25),
                     Random.nextInt(25, 45),
-                    Random.nextInt(600000, 900000)
+                    Random.nextInt(600000, 900000),
+                    0
                 )
                 box.items.add(item)
             }
@@ -75,12 +81,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             boxes.add(box)
         }
 
-
-        adapter = BoxAdapter(boxes, this)
-
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = adapter
     }
 
     override fun onBackPressed() {
@@ -105,7 +105,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_box -> {
-                //TODO: Armoire nav
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
             }
         }
 
@@ -115,6 +116,27 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onClick(view: View) {
         if (view.tag == null) return
-        Log.i("MainActivity", "Click sur une armoire de la liste")
+        val intent = Intent(this, ShowItemsActivity::class.java)
+        val box = boxes.get(view.tag as Int)
+
+        intent.putExtra("position", view.tag as Int)
+        intent.putParcelableArrayListExtra("items", ArrayList(box.items))
+        startActivityForResult(intent, 1)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode != 1) return;
+
+        if (data?.hasExtra("position")!! && data.hasExtra("items")) {
+            val position = data.getIntExtra("position", -1)
+            val items = data.getParcelableArrayListExtra<Item>("items")
+            if (position != -1) {
+                boxes[position].items = items.toMutableList();
+                adapter.notifyItemChanged(position)
+            }
+            return
+        }
     }
 }

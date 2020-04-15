@@ -13,7 +13,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import ca.cshawi.myinventory.R
 
-class BoxAdapter(val boxes: List<Box>, val onClick: View.OnClickListener) :
+class BoxAdapter(val boxes: MutableList<Box>, val onClick: View.OnClickListener) :
     RecyclerView.Adapter<BoxAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
