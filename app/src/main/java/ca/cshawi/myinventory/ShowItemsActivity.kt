@@ -11,11 +11,17 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.MenuItem
+import ca.cshawi.myinventory.api.APIService
+import ca.cshawi.myinventory.api.ActionResponse
+import ca.cshawi.myinventory.api.requests.UpdateItemsRequest
 import ca.cshawi.myinventory.boxes.Box
 import ca.cshawi.myinventory.boxes.items.ItemAdapter
 import ca.cshawi.myinventory.boxes.items.ItemSwipeController
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class ShowItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
@@ -31,18 +37,32 @@ class ShowItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
         fab.setImageResource(R.drawable.round_save_white_36)
         fab.setOnClickListener { view ->
+
             box.items.forEach {
                 it.currentAmount += it.changedQuantity
                 it.changedQuantity = 0
                 adapter.notifyDataSetChanged()
             }
+            
+            APIService.INSTANCE.updateItems(UpdateItemsRequest(box.id, box.items).toString())
+                .enqueue(object :
+                    Callback<ActionResponse> {
+                    override fun onFailure(call: Call<ActionResponse>, t: Throwable) {
+                        t.printStackTrace()
+                    }
 
-            Snackbar.make(
-                view,
-                "Les modifications ont été sauvegardé avec succès",
-                Snackbar.LENGTH_LONG
-            )
-                .setAction("Quitter") { onBackPressed() }.show()
+                    override fun onResponse(
+                        call: Call<ActionResponse>,
+                        response: Response<ActionResponse>
+                    ) {
+
+                        Snackbar.make(
+                            view,
+                            "Les modifications ont été sauvegardé avec succès",
+                            Snackbar.LENGTH_LONG
+                        ).setAction("Quitter") { onBackPressed() }.show()
+                    }
+                });
         }
 
 
