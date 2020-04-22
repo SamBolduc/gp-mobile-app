@@ -12,12 +12,17 @@ import android.support.v7.widget.RecyclerView
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import ca.cshawi.myinventory.api.APIService
+import ca.cshawi.myinventory.api.callbacks.GetCallback
 import ca.cshawi.myinventory.boxes.Box
 import ca.cshawi.myinventory.boxes.BoxAdapter
 import ca.cshawi.myinventory.boxes.items.Item
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.app_bar_main.*
+import java.util.*
+import java.util.concurrent.TimeUnit
 import kotlin.random.Random
+
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
     View.OnClickListener {
@@ -29,7 +34,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-
         fab.setOnClickListener { view ->
             Snackbar.make(view, "TODO: Nouvelle armoire", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
@@ -81,7 +85,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             boxes.add(box)
         }
 
+        boxes.clear();
+
+        Timer().scheduleAtFixedRate(object : TimerTask() {
+            override fun run() {
+                APIService.INSTANCE.getBoxes()
+                    .enqueue(GetCallback())
+            }
+        }, 0, TimeUnit.SECONDS.toMillis(3))
     }
+
 
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START))
@@ -120,7 +133,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val box = boxes.get(view.tag as Int)
 
         intent.putExtra("position", view.tag as Int)
-        intent.putParcelableArrayListExtra("items", ArrayList(box.items))
+        intent.putExtra("box", box)
         startActivityForResult(intent, 1)
     }
 
@@ -129,11 +142,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         if (resultCode != 1) return;
 
-        if (data?.hasExtra("position")!! && data.hasExtra("items")) {
+        if (data?.hasExtra("position")!! && data.hasExtra("box")) {
             val position = data.getIntExtra("position", -1)
-            val items = data.getParcelableArrayListExtra<Item>("items")
+            val box = data.getParcelableExtra<Box>("box")
             if (position != -1) {
-                boxes[position].items = items.toMutableList();
+                boxes[position] = box
                 adapter.notifyItemChanged(position)
             }
             return

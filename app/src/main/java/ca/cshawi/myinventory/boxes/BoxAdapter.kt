@@ -49,7 +49,7 @@ class BoxAdapter(val boxes: MutableList<Box>, val onClick: View.OnClickListener)
 
         if (holder.itemsLayout.childCount > 0) holder.itemsLayout.removeAllViews()
         for (i in 0..2) {
-            if (i >= boxes.size) break
+            if (i >= box.items.size) break
             val item = box.items[i]
 
             val textView = TextView(context)
