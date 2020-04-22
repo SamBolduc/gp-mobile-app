@@ -25,9 +25,14 @@ class GetCallback() : Callback<List<Box>> {
                 activity.adapter.notifyDataSetChanged();
             }
             is ShowItemsActivity -> {
+                val oldItems = activity.box.items.toList()
                 activity.box.items.clear()
                 response.body()?.filter { box -> box.id == activity.box.id }?.forEach {
-                    activity.box.items.addAll(it.items)
+                    it.items.forEach { item ->
+                        item.changedQuantity =
+                            oldItems.first { oldItem -> oldItem.id == item.id }.changedQuantity
+                        activity.box.items.add(item)
+                    }
                 }
                 activity.adapter.notifyDataSetChanged();
             }
