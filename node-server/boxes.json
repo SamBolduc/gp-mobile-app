@@ -1,0 +1,17 @@
+[
+    {
+        "id": 2,
+        "title": "Un autre titre",
+        "open": false,
+        "items": [
+            {
+                "id": 26,
+                "name": "Un nom",
+                "description": "Une description",
+                "currentAmount": 2,
+                "maxAmount": 13,
+                "barCode": 2551333
+            }
+        ]
+    }
+]

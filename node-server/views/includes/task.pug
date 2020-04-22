@@ -1,0 +1,11 @@
+if task
+  tr(id=`task${task.code}`)
+    th(scope="row")= task.code
+    td= task.title
+    td= task.body
+    td
+      button(type="button" class="btn btn-outline-danger" onclick=`deleteTask(${ task.code })`) Supprimer
+if error
+  tr(id="error")
+    td(colspan="4")
+      div(class="alert alert-danger" role="alert")= error.message 

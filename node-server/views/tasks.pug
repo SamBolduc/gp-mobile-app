@@ -1,0 +1,24 @@
+extends layouts/main
+
+block content
+  script(src="./js/tasks.js")
+  h1(class="pb-4 pt-2") Liste des tâches
+  table(id="table" class="table")
+    thead(class="thead-dark")
+      tr
+        th(scope="col") #
+        th(scope="col") Titre
+        th(scope="col") Description
+        th(scope="col") Actions
+    tbody#tbody
+      each task in tasks
+        include includes/task
+      tr(id="tfooter")
+        td
+          div(class="form-group")
+            td
+              input(id="titleInput" type="text" class="form-control" placeholder="Titre")
+            td
+              input(id="bodyInput" type="text" class="form-control" placeholder="Description") 
+            td
+              button(id="addButton" type="button" class="btn btn-primary") Ajouter
