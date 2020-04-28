@@ -16,11 +16,16 @@ router.post("/items", async (req, res) => {
 });
 
 router.post("/new", async (req, res) => {
-    const box = await Boxes.create({
-        title: req.body.title,
-        description: req.body.description,
-    });
-    res.json(box);
+    const box = await Boxes.create(req.body);
+    res.json({ success: true, id: box.id });
+});
+
+router.post("/boxes/:id/newItem", async (req, res) => {
+    const id = req.params.id;
+    const box = await Boxes.findOne({ id });
+    box.items.push({ id: box.items.length + 1, ...req.body });
+    await box.save();
+    res.json({ success: true });
 });
 
 module.exports = router;
