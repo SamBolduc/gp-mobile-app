@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
@@ -10,4 +12,7 @@ app.use(logger);
 app.use(bodyParser.json());
 app.use("/", router);
 
-app.listen(3000, "192.168.2.17");
+const url = process.env.SRV_URL;
+const port = Number(process.env.SRV_PORT);
+app.listen(port, url);
+console.log(`Listening on ${url}:${port}`);

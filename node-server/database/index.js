@@ -1,13 +1,6 @@
 const mongoose = require("mongoose");
 
-const protocol = "mongodb://";
-const url = "127.0.0.1";
-const params = "?retryWrites=true&w=majority";
-const username = "webserver";
-const password = "webserver";
-const database = "webserver";
-
-const connectionString = `${protocol}${username}:${password}@${url}/${database}${params}`;
+const connectionString = process.env.DB_URL;
 
 const options = {
     useNewUrlParser: true,
