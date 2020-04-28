@@ -10,17 +10,17 @@ const database = "webserver";
 const connectionString = `${protocol}${username}:${password}@${url}/${database}${params}`;
 
 const options = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useFindAndModify: false,
-  useCreateIndex: true,
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+    useCreateIndex: true,
 };
 
 mongoose
-  .connect(connectionString, options)
-  .then((db) => {
-    console.log("Connecté avec succès");
-  })
-  .catch((err) => {
-    console.log(err);
-  }); 
+    .connect(connectionString, options)
+    .then((db) => {
+        console.log("Connecté avec succès");
+    })
+    .catch((err) => {
+        console.log(err);
+    });

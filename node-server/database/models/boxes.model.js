@@ -1,57 +1,85 @@
 const mongoose = require("mongoose");
 
 const itemsSchema = new mongoose.Schema({
-    id:{
+    id: {
         type: Number,
         requied: true,
         unique: true,
-        default: 0
+        default: 0,
     },
-    name:{
+    name: {
         type: String,
         required: true,
         maxlength: 25,
-        trim:true
+        trim: true,
     },
-    description:{
+    description: {
         type: String,
         required: true,
         maxlength: 50,
-        trim:true
+        trim: true,
     },
-    currentAmount:{
+    currentAmount: {
         type: Number,
-        default: 0
+        default: 0,
     },
-    maxAmount:{
+    maxAmount: {
         type: Number,
-        default: 0
+        default: 0,
     },
-    barCode:{
+    barCode: {
         type: Number,
-        required: true
-    }
-})
+        required: true,
+    },
+});
 
 const schema = new mongoose.Schema({
-    id:{
+    id: {
         type: Number,
         requied: true,
         unique: true,
-        default: 0
+        default: 0,
     },
-    title:{
+    title: {
         type: String,
         required: true,
         maxlength: 25,
-        trim:true
+        trim: true,
     },
-    open:{
+    description: {
+        type: String,
+        required: false,
+    },
+    open: {
         type: Boolean,
-        default: false
+        default: false,
     },
-    items: [itemsSchema]
+    items: [itemsSchema],
 });
+
+schema.pre("save", function (next) {
+    if (!this.isNew) {
+        next();
+        return;
+    }
+
+    Order.getNextNumber((number) => {
+        this.number = number;
+        next();
+    });
+});
+
+schema.statics.getNextOrderNumber = function (callback) {
+    this.estimatedDocumentCount((err, count) => {
+        if (err) {
+            console.log(err);
+            callback(0);
+            return;
+        }
+
+        callback(count + 1);
+    });
+};
 
 const Boxes = mongoose.model("Boxes", schema);
 

@@ -1,33 +1,26 @@
 const router = require("express").Router();
-const Boxes = require("../database/models/boxes.model")
+const Boxes = require("../database/models/boxes.model");
 
-router.get("/", (req, res) => {
-  Boxes.find({})
-    .then((boxes)=>{
-      res.json(boxes)
-    })
-    .catch((e)=> {
-      console.log(e)
-      res.end()
-    })
+router.get("/", async (req, res) => {
+    const boxes = await Boxes.find({});
+    res.json(boxes);
 });
 
-router.post("/items", (req, res) => {
-  const data = JSON.parse(req.body.data);
-  Boxes.findOneAndUpdate(
-      {id: data.boxId},
-      {items: data.items},
-      {upsert: true}
-    )
-    .then((result)=>{
-      res.json({success: true});
-    })
-    .catch((e)=> {  
-      console.log(e)
-      res.end()
-    })
+router.post("/items", async (req, res) => {
+    await Boxes.findOneAndUpdate(
+        { id: req.body.boxId },
+        { items: req.body.items },
+        { upsert: true }
+    );
+    res.json({ success: true });
 });
 
+router.post("/new", async (req, res) => {
+    const box = await Boxes.create({
+        title: req.body.title,
+        description: req.body.description,
+    });
+    res.json(box);
+});
 
 module.exports = router;
- 
