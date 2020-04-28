@@ -18,9 +18,9 @@ const options = {
 
 mongoose
     .connect(connectionString, options)
-    .then((db) => {
+    .then(() => {
         console.log("Connecté avec succès");
     })
     .catch((err) => {
-        console.log(err);
+        console.error(err);
     });

@@ -7,7 +7,7 @@ const schema = new mongoose.Schema({
         unique: true,
         default: 0,
     },
-    title: {
+    name: {
         type: String,
         required: true,
         maxlength: 25,
@@ -19,11 +19,18 @@ const schema = new mongoose.Schema({
         maxlength: 50,
         trim: true,
     },
-    open: {
-        type: Boolean,
-        default: false,
+    currentAmount: {
+        type: Number,
+        default: 0,
     },
-    items: [{ type: mongoose.Schema.Types.ObjectId, ref: "Items" }],
+    maxAmount: {
+        type: Number,
+        default: 0,
+    },
+    barCode: {
+        type: Number,
+        required: true,
+    },
 });
 
 schema.pre("save", function (next) {
@@ -50,6 +57,6 @@ schema.statics.getNextOrderNumber = function (callback) {
     });
 };
 
-const Boxes = mongoose.model("Boxes", schema);
+const Items = mongoose.model("Items", schema);
 
-module.exports = Boxes;
+module.exports = Items;
