@@ -36,7 +36,7 @@ const itemsSchema = new mongoose.Schema({
 const schema = new mongoose.Schema({
     id: {
         type: Number,
-        requied: true,
+        required: true,
         unique: true,
         default: 0,
     },
@@ -59,30 +59,34 @@ const schema = new mongoose.Schema({
     items: [itemsSchema],
 });
 
+
 schema.pre("save", function (next) {
     if (!this.isNew) {
         next();
         return;
     }
 
-    Order.getNextNumber((number) => {
-        this.number = number;
+    Boxes.getNextBoxId((id) => {
+        this.id = id;
         next();
     });
 });
 
-schema.statics.getNextOrderNumber = function (callback) {
-    this.estimatedDocumentCount((err, count) => {
-        if (err) {
-            console.log(err);
-            callback(0);
-            return;
-        }
+schema.statics.getNextBoxId = function(callback){
+    this.countDocuments((err, count)=>{
+      if(count){
+        this.findOne()
+          .sort({id: -1})
+          .exec((err,box)=>{
+            callback(box.id + 1)
+          })
+      } else {
+        callback(0)
+      }
+    })
+  }
 
-        callback(count + 1);
-    });
-};
+  const Boxes = mongoose.model("Boxes", schema);
 
-const Boxes = mongoose.model("Boxes", schema);
 
 module.exports = Boxes;
