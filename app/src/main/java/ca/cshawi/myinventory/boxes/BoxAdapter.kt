@@ -21,6 +21,7 @@ class BoxAdapter(val boxes: MutableList<Box>, val onClick: View.OnClickListener)
         val titleView = cardView.findViewById<TextView>(R.id.box_title)
         val statusView = cardView.findViewById<TextView>(R.id.box_status)
         val itemsLayout = cardView.findViewById<LinearLayout>(R.id.box_items_layout)
+        val notification = cardView.findViewById<TextView>(R.id.box_notification)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -46,7 +47,10 @@ class BoxAdapter(val boxes: MutableList<Box>, val onClick: View.OnClickListener)
                 if (box.open) R.color.green else R.color.red
             )
         )
-
+        holder.notification.text = box.modif.toString();
+        if (box.modif == 0) holder.notification.visibility = View.GONE
+        else holder.notification.visibility = View.VISIBLE
+        
         if (holder.itemsLayout.childCount > 0) holder.itemsLayout.removeAllViews()
         for (i in 0..2) {
             if (i >= box.items.size) break

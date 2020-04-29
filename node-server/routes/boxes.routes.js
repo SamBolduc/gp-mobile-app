@@ -11,7 +11,10 @@ router.post("/items", async (req, res) => {
 
     await Boxes.findOneAndUpdate(
         { id: data.boxId },
-        { items: data.items },
+        { 
+            modif: 0,
+            items: data.items
+        },
         { upsert: true }
     );
     res.json({ success: true });

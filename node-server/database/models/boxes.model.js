@@ -56,6 +56,18 @@ const schema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    side: 
+    {
+        type: String,
+        maxlength: 1,
+        trim: true,
+        default: "R",
+    },
+    modif: 
+    {
+        type: Number,
+        default:0,
+    },
     items: [itemsSchema],
 });
 

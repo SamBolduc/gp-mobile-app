@@ -8,12 +8,14 @@ data class Box(
     var id: Int = -1,
     var title: String = "",
     var open: Boolean = false,
+    var modif: Int = 0,
     var items: MutableList<Item> = mutableListOf()
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
         parcel.readString(),
-        parcel.readByte() != 0.toByte()
+        parcel.readByte() != 0.toByte(),
+        parcel.readInt()
     ) {
         parcel.readList(items, Item::class.java.classLoader)
     }
@@ -22,6 +24,7 @@ data class Box(
         parcel.writeInt(id)
         parcel.writeString(title)
         parcel.writeByte(if (open) 1 else 0)
+        parcel.writeInt(modif)
         parcel.writeList(items)
     }
 

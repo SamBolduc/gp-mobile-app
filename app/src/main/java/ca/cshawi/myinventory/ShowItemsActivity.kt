@@ -43,7 +43,7 @@ class ShowItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                 it.changedQuantity = 0
                 adapter.notifyDataSetChanged()
             }
-            
+
             APIService.INSTANCE.updateItems(UpdateItemsRequest(box.id, box.items).toString())
                 .enqueue(object :
                     Callback<ActionResponse> {
@@ -56,6 +56,7 @@ class ShowItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
                         response: Response<ActionResponse>
                     ) {
 
+                        box.modif = 0
                         Snackbar.make(
                             view,
                             "Les modifications ont été sauvegardé avec succès",
