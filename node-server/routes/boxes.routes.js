@@ -7,17 +7,24 @@ router.get("/", async (req, res) => {
 });
 
 router.post("/items", async (req, res) => {
+    const data = JSON.parse(req.body.data);
+
     await Boxes.findOneAndUpdate(
-        { id: req.body.boxId },
-        { items: req.body.items },
+        { id: data.boxId },
+        { items: data.items },
         { upsert: true }
     );
     res.json({ success: true });
 });
 
 router.post("/new", async (req, res) => {
-    const box = await Boxes.create(req.body);
-    res.json({ success: true, id: box.id });
+    const data = JSON.parse(req.body.data);
+
+    const box = await Boxes.create({
+        title: data.title,
+        description: data.description
+    });
+    res.json({ success: true, id: box.id }); 
 });
 
 router.post("/boxes/:id/newItem", async (req, res) => {

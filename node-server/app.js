@@ -10,6 +10,7 @@ require("./database");
 
 app.use(logger);
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/", router);
 
 const url = process.env.SRV_URL;
