@@ -22,6 +22,7 @@ interface APIService {
     @POST("/boxes/new")
     fun addBox(@Field("data") body: String): Call<ActionResponse>
 
+    @FormUrlEncoded
     @POST
     fun addItem(@Url url: String, @Field("data") body: String): Call<ActionResponse>
 

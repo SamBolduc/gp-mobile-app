@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.helper.ItemTouchHelper
-import android.util.Log
 import android.view.MenuItem
 import ca.cshawi.myinventory.api.APIService
 import ca.cshawi.myinventory.api.ActionResponse
@@ -40,12 +39,7 @@ class ShowItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
         setContentView(R.layout.activity_show_items)
 
-
         speedDial.expansionMode = SpeedDialView.ExpansionMode.TOP
-        speedDial.setOnClickListener {
-            Log.i("Here", "Salut")
-        }
-
 
         speedDial.addActionItem(
             SpeedDialActionItem.Builder(
@@ -78,7 +72,11 @@ class ShowItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         speedDial.setOnActionSelectedListener(SpeedDialView.OnActionSelectedListener { actionItem ->
             when (actionItem.id) {
                 R.id.fab_new -> {
-                    //TODO: Add new item
+                    val intent = Intent(this, AddItemActivity::class.java)
+                    intent.putExtra("position", boxPosition)
+                    intent.putExtra("box", box)
+                    startActivityForResult(intent, 1)
+
                     speedDial.close()
                     return@OnActionSelectedListener true
                 }
@@ -151,6 +149,18 @@ class ShowItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
 
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode != 1) return;
+
+        if (data?.hasExtra("position")!! && data.hasExtra("box")) {
+            this.boxPosition = data.getIntExtra("position", -1)
+            this.box = data.getParcelableExtra<Box>("box")
+            return
+        }
     }
 
     override fun onBackPressed() {
