@@ -11,7 +11,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import ca.cshawi.myinventory.R
 
-class ItemAdapter(val items: MutableList<Item>) :
+class ItemAdapter(var items: MutableList<Item>) :
     RecyclerView.Adapter<ItemAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -65,7 +65,6 @@ class ItemAdapter(val items: MutableList<Item>) :
                     if (item.changedQuantity < 0) R.color.red else if (item.changedQuantity > 0) R.color.green else R.color.primaryDarkColor
                 )
             )
-
 
             notifyItemChanged(position)
         }
