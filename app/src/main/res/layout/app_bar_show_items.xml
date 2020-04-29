@@ -22,14 +22,21 @@
 
     <include layout="@layout/content_show_items" />
 
-    <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
+    <com.leinardi.android.speeddial.SpeedDialOverlayLayout
+            android:id="@+id/overlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:backgroundTint="@color/primaryDarkColor" />
+
+    <com.leinardi.android.speeddial.SpeedDialView
+            android:id="@+id/speedDial"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:backgroundTint="@color/primaryDarkColor"
-            android:tint="@color/primaryTextColor"
-            android:layout_margin="16dp"
-            app:srcCompat="@android:drawable/ic_input_add" />
+            app:sdMainFabClosedBackgroundColor="@color/primaryDarkColor"
+            app:sdMainFabOpenedBackgroundColor="@color/primaryDarkColor"
+            app:sdMainFabClosedSrc="@drawable/baseline_keyboard_arrow_up_white_36"
+            app:sdMainFabAnimationRotateAngle="180"
+            app:sdOverlayLayout="@id/overlay" />
 
 </android.support.design.widget.CoordinatorLayout>
