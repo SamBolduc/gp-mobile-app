@@ -1,0 +1,25 @@
+extends layouts/main
+
+block content
+
+    div(class="col-12 titleDiv")
+        h1(class="col-12 titleHead") Bienvenue dans le simulateur d'armoire
+
+    div(class="col-12 contentDiv")
+        h1(class="col-12 contentTitle") Choisir une d'armoire
+        
+        div(class="row form-group")
+            table(class="table")
+                thead(class="thead-dark")
+                    tr
+                        th(scope="col") #
+                        th(scope="col") Description
+                        th(scope="col") Etat de l'd'armoire
+                        th(scope="col") Ouvrir
+                        th(scope="col") Modification
+                        
+                tbody(id="bodyTR")
+                    for armoir in armoirs
+                        include includes/Armoir  
+
+    script(src="./javascripts/comptAxios.js")

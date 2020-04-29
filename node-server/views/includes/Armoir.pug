@@ -1,0 +1,27 @@
+tr
+    td(scope="col")= armoir.id
+    td(scope="col")= armoir.title
+    td(scope="col") 
+        if (armoir.side == 'L')
+            if (!armoir.open)
+                img(src="/images/ArmoirClose.png", alt="Armoir")
+            else
+                img(src="/images/ArmoirLeftOpen.png", alt="Armoir")
+        else
+            if (!armoir.open)
+                img(src="/images/ArmoirClose.png", alt="Armoir")
+            else
+                img(src="/images/ArmoirRightOpen.png", alt="Armoir")
+    
+    td(scope="col")
+        if (!armoir.open)
+            input(id="btnOpen" class="button_1 " type="submit" name=(armoir.id) value="Ouvrir Armoire" )
+            br
+            input(id="btnClose" class="button_2 disabled" type="submit" name=(armoir.id) value="Fermer Gauche")
+        else
+            input(id="btnOpen" class="button_1 disabled" type="submit" name=(armoir.id) value="Ouvrir Armoire")
+            br
+            input(id="btnClose" class="button_2 " type="submit" name=(armoir.id) value="Fermer Gauche")
+    
+    td(scope="col")
+        span(class=armoir.modif)= armoir.modif

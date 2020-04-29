@@ -1,0 +1,59 @@
+/* **************************** title ****************************** */
+
+.titleHead {
+  text-align: center;
+  color: blue;
+}
+
+.contentTitle {
+  text-align: center;
+}
+
+
+/* ******************************** DIV *************************** */
+
+div {
+  border-collapse: collapse;
+  min-height: 50px;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+.titleDiv {
+  background-color: yellowgreen;
+}
+
+.contentDiv {
+  background-color: powderblue;
+}
+
+/* ********************************* img ************************* */
+
+img {
+  width: 450px;
+  max-height: 100px;
+}
+
+.button_1 {
+  width: 130px;
+  margin-bottom: 5px;
+  background-color: palevioletred;
+}
+
+.button_2 {
+  width: 130px;
+  margin-bottom: 5px;
+  background-color: teal;
+}
+
+
+
+.disabled {
+  opacity: 0.4; 
+  pointer-events: none;
+}
+
+.input_O2 {
+  margin-bottom: 5px;
+}
+
