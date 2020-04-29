@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:showIn="@layout/app_bar_new_box"
+        tools:context=".AddBoxActivity"
+        android:orientation="vertical"
+        android:layout_margin="5dp">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ajouter une armoire"
+                android:textSize="26sp"
+                android:textStyle="bold" />
+
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Titre: "
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:layout_weight="0" />
+
+            <EditText
+                    android:id="@+id/new_box_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:textSize="18sp"
+                    android:hint="Titre de l'armoire"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:inputType="text"
+                    android:autofillHints="" />
+        </LinearLayout>
+
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description: "
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_weight="0"
+                android:maxLength="25" />
+
+
+        <EditText
+                android:id="@+id/new_box_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:textSize="18sp"
+                android:hint="Une courte description de l'armoire"
+                android:maxLength="50"
+                android:inputType="text"
+                android:autofillHints="" />
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

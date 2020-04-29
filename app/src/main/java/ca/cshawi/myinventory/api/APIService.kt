@@ -6,10 +6,7 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface APIService {
 
@@ -19,6 +16,14 @@ interface APIService {
     @FormUrlEncoded
     @POST("/boxes/items")
     fun updateItems(@Field("data") body: String): Call<ActionResponse>
+
+
+    @FormUrlEncoded
+    @POST("/boxes/new")
+    fun addBox(@Field("data") body: String): Call<ActionResponse>
+
+    @POST
+    fun addItem(@Url url: String, @Field("data") body: String): Call<ActionResponse>
 
     companion object {
 
