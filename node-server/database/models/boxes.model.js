@@ -3,9 +3,9 @@ const mongoose = require("mongoose");
 const itemsSchema = new mongoose.Schema({
     id: {
         type: Number,
-        requied: true,
+        required: true,
         unique: true,
-        default: 0,
+        default: 0
     },
     name: {
         type: String,
@@ -31,7 +31,7 @@ const itemsSchema = new mongoose.Schema({
         type: Number,
         required: true,
     },
-});
+},{ _id : false });
 
 const schema = new mongoose.Schema({
     id: {
@@ -48,7 +48,7 @@ const schema = new mongoose.Schema({
     },
     description: {
         type: String,
-        required: true,
+        default:"",
         maxlength: 50,
         trim: true,
     },
