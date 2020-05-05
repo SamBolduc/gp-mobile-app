@@ -1,71 +1,27 @@
 const router = require("express").Router();
-const ArmoirDB = require("../database/models/boxes.model");
+const Boxes = require("../database/models/boxes.model");
 
-
-//#region -->(ok) GET de simulateur.pug
-router.get("/", (req, res) => {
-  ArmoirDB
-    .find({})
-    .sort({id:1})
-    .then((ArmoirsDB) => {
-      //console.log("ARMOIRS : ", ArmoirsDB);
-      res.render("simulateur", { armoirs: ArmoirsDB });
-    })
-
-    .catch((error) => {
-      console.log(error);
-    });
+router.get("/", async (req, res) => {
+    let boxes = await Boxes.find({}).sort({ id: 1 });
+    res.render("simulateur", { armoirs: boxes });
 });
-//#endregion
 
+router.post("/", async (req, res) => {
+    let id = req.body.type;
+    let box = await Boxes.findOne({ id });
 
-//#region -->(ok) POST de homeTasks
-router.post("/", (req, res) => {
-  let id = req.body.type;
+    if (req.body.state == "open") {
+        box.modif++;
+        box.open = true;
+        await box.save();
 
-  //#region -->(ok) Partie du post par BTN OPEN
-  if (req.body.state == "open")
-  {
-    ArmoirDB
-      .findOne({id : id})
-      
-      .then(item => {
-          item.modif++;
-          item.open=true;
-          item.save()
+        res.render("includes/Armoir", { armoir: box });
+    } else {
+        box.open = false;
+        await box.save();
 
-          res.render("includes/Armoir", {armoir: item});
-      })
-      
-      .catch(e => {
-          console.log(e)
-          res.end()
-      })
-  }
-  //#endregion
-  
-
-  //#region -->(ok) Partie du post par BTN CLOSE
-  else
-  {
-    ArmoirDB
-      .findOne({id : id})
-      
-      .then(item => {
-          item.open=false;
-          item.save()
-
-          res.render("includes/Armoir", {armoir: item});
-      })
-      
-      .catch(e => {
-          console.log(e)
-          res.end()
-      })
-  }
-  //#endregion
-   
+        res.render("includes/Armoir", { armoir: bxo });
+    }
 });
-//#endregion
 
 module.exports = router;

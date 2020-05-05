@@ -10,7 +10,6 @@ const logger = require("./middlewares/logger");
 require("./database");
 
 app.use(logger);
-app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/", router);
 
