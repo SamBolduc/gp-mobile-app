@@ -2,7 +2,7 @@ const router = require("express").Router();
 const Boxes = require("../database/models/boxes.model");
 
 router.get("/", async (req, res) => {
-    const boxes = await Boxes.find({}, {"_id": 0});
+    const boxes = await Boxes.find({}, { _id: 0 });
     res.json(boxes);
 });
 
@@ -11,12 +11,13 @@ router.post("/items", async (req, res) => {
 
     await Boxes.findOneAndUpdate(
         { id: data.boxId },
-        { 
+        {
             modif: 0,
-            items: data.items
+            items: data.items,
         },
         { upsert: true }
     );
+
     res.json({ success: true });
 });
 
@@ -25,25 +26,39 @@ router.post("/new", async (req, res) => {
 
     const box = await Boxes.create({
         title: data.title,
-        description: data.description
+        description: data.description,
     });
-    res.json({ success: true, id: box.id }); 
+
+    res.json({ success: true, id: box.id });
 });
 
 router.post("/:id/newItem", async (req, res) => {
     const data = JSON.parse(req.body.data);
-    console.log(data)
+
     const id = req.params.id;
     const box = await Boxes.findOne({ id });
+
     box.items.push({
-         id: box.items.length + 1, 
-         name: data.name,
-         description: data.description,
-         currentAmount: data.currentAmount,
-         maxAmount: data.maxAmount,
-         barCode: data.barCode
-        });
+        id: box.items.length + 1,
+        name: data.name,
+        description: data.description,
+        currentAmount: data.currentAmount,
+        maxAmount: data.maxAmount,
+        barCode: data.barCode,
+    });
     await box.save();
+
+    res.json({ success: true });
+});
+
+router.delete("/:id/item/:itemId", async (req, res) => {
+    let id = Number(req.params.id);
+    let box = await Boxes.findOne({ id });
+
+    let itemId = Number(req.params.itemId);
+    box.items = box.items.filter((i) => i.id !== itemId);
+    await box.save();
+
     res.json({ success: true });
 });
 
