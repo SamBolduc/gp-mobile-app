@@ -2,25 +2,9 @@ package ca.cshawi.myinventory.boxes
 
 import android.os.Parcel
 import android.os.Parcelable
-import ca.cshawi.myinventory.boxes.items.Item
 
-data class Box(
-    var id: Int = -1,
-    var title: String = "",
-    var description: String = "",
-    var open: Boolean = false,
-    var side: String = "",
-    var modif: Int = 0,
-    var items: MutableList<Item> = mutableListOf()
-) : Parcelable {
-    constructor(parcel: Parcel) : this(
-        parcel.readInt(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readByte() != 0.toByte(),
-        parcel.readString(),
-        parcel.readInt()
-    ) {
+data class Box(var id: Int = -1, var title: String = "", var description: String = "", var open: Boolean = false, var side: String = "", var modif: Int = 0, var items: MutableList<Item> = mutableListOf()) : Parcelable {
+    constructor(parcel: Parcel) : this(parcel.readInt(), parcel.readString(), parcel.readString(), parcel.readByte() != 0.toByte(), parcel.readString(), parcel.readInt()) {
         parcel.readList(items, Item::class.java.classLoader)
     }
 

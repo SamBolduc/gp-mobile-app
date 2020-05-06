@@ -4,8 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.os.Bundle
 
-class ActivityLifeCycleCallback() :
-    Application.ActivityLifecycleCallbacks {
+class ActivityLifeCycleCallback() : Application.ActivityLifecycleCallbacks {
     override fun onActivityPaused(activity: Activity?) {}
 
     override fun onActivityResumed(activity: Activity?) {}

@@ -2,7 +2,7 @@ package ca.cshawi.myinventory.api.callbacks
 
 import ca.cshawi.myinventory.MainActivity
 import ca.cshawi.myinventory.MyInventory
-import ca.cshawi.myinventory.ShowItemsActivity
+import ca.cshawi.myinventory.activities.ShowItemsActivity
 import ca.cshawi.myinventory.boxes.Box
 import retrofit2.Call
 import retrofit2.Callback
@@ -14,10 +14,7 @@ class GetCallback() : Callback<List<Box>> {
         t.printStackTrace()
     }
 
-    override fun onResponse(
-        call: Call<List<Box>>,
-        response: Response<List<Box>>
-    ) {
+    override fun onResponse(call: Call<List<Box>>, response: Response<List<Box>>) {
         when (val activity = MyInventory.CURRENT) {
             is MainActivity -> {
                 activity.boxes.clear()
@@ -32,7 +29,7 @@ class GetCallback() : Callback<List<Box>> {
                     it.items.forEach { item ->
                         val oldItem = oldItems.firstOrNull { oldItem -> oldItem.id == item.id }
                         if (oldItem != null) item.changedQuantity = oldItem.changedQuantity
-
+                        else activity.adapter.notifyDataSetChanged()
                         activity.box.items.add(item.copy())
                     }
                 }

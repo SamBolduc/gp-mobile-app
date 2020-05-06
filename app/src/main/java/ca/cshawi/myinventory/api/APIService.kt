@@ -33,12 +33,7 @@ interface APIService {
         val INSTANCE = this.create()
 
         fun create(): APIService {
-            val retrofit = Retrofit.Builder()
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(ScalarsConverterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl("http://192.168.2.17:3000/")
-                .build()
+            val retrofit = Retrofit.Builder().addCallAdapterFactory(RxJava2CallAdapterFactory.create()).addConverterFactory(ScalarsConverterFactory.create()).addConverterFactory(GsonConverterFactory.create()).baseUrl("https://gp.raphaeltheriault.com/").build()
 
             return retrofit.create(APIService::class.java)
         }

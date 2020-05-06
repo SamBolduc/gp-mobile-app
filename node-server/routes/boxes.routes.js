@@ -53,19 +53,10 @@ router.post("/:id/newItem", async (req, res) => {
 
 router.delete("/:id/item/:itemId", async (req, res) => {
     let id = Number(req.params.id);
-    console.log("salut cava")    
-
     let box = await Boxes.findOne({ id });
 
-    console.log("salut cava1")    
     let itemId = Number(req.params.itemId);
-
-    console.log(itemId)
-    console.log(box)
     box.items = box.items.filter((i) => i.id !== itemId);
-
-    console.log(itemId)
-    console.log(box)
     await box.save();
 
     res.json({ success: true });

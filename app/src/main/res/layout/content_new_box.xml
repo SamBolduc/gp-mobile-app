@@ -6,7 +6,7 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:showIn="@layout/app_bar_new_box"
-        tools:context=".AddBoxActivity"
+        tools:context=".activities.AddBoxActivity"
         android:orientation="vertical"
         android:layout_margin="5dp">
 

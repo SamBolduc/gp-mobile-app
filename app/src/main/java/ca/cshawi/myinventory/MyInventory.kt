@@ -15,7 +15,7 @@ class MyInventory : Application() {
         super.onTerminate()
         unregisterActivityLifecycleCallbacks(activityLifecycleCallback)
     }
-
+  
     companion object {
         var CURRENT: Activity? = null
     }

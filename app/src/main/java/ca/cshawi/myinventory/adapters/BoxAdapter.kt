@@ -1,4 +1,4 @@
-package ca.cshawi.myinventory.boxes
+package ca.cshawi.myinventory.adapters
 
 import android.annotation.SuppressLint
 import android.graphics.Typeface
@@ -12,9 +12,9 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import ca.cshawi.myinventory.R
+import ca.cshawi.myinventory.boxes.Box
 
-class BoxAdapter(val boxes: MutableList<Box>, val onClick: View.OnClickListener) :
-    RecyclerView.Adapter<BoxAdapter.ViewHolder>() {
+class BoxAdapter(val boxes: MutableList<Box>, val onClick: View.OnClickListener) : RecyclerView.Adapter<BoxAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val cardView = itemView.findViewById<CardView>(R.id.box_card_view)
@@ -25,8 +25,7 @@ class BoxAdapter(val boxes: MutableList<Box>, val onClick: View.OnClickListener)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val viewItem = LayoutInflater.from(parent.context)
-            .inflate(R.layout.box_list_item, parent, false)
+        val viewItem = LayoutInflater.from(parent.context).inflate(R.layout.box_list_item, parent, false)
 
         return ViewHolder(viewItem)
     }
@@ -41,31 +40,18 @@ class BoxAdapter(val boxes: MutableList<Box>, val onClick: View.OnClickListener)
 
         holder.titleView.text = box.title
         holder.statusView.text = if (box.open) "Ouverte" else "Fermée"
-        holder.statusView.setTextColor(
-            ContextCompat.getColor(
-                context,
-                if (box.open) R.color.green else R.color.red
-            )
-        )
+        holder.statusView.setTextColor(ContextCompat.getColor(context, if (box.open) R.color.green else R.color.red))
         holder.notification.text = box.modif.toString();
         if (box.modif == 0) holder.notification.visibility = View.GONE
         else holder.notification.visibility = View.VISIBLE
-        
+
         if (holder.itemsLayout.childCount > 0) holder.itemsLayout.removeAllViews()
-        for (i in 0..2) {
+        for (i in 0 .. 2) {
             if (i >= box.items.size) break
             val item = box.items[i]
 
             val textView = TextView(context)
-            val params = LinearLayout.LayoutParams(
-                TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    0F,
-                    context.resources.displayMetrics
-                ).toInt(),
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                1F
-            )
+            val params = LinearLayout.LayoutParams(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 0F, context.resources.displayMetrics).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT, 1F)
 
             textView.layoutParams = params
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16f);

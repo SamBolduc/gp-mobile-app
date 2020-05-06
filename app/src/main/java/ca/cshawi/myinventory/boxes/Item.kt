@@ -1,26 +1,10 @@
-package ca.cshawi.myinventory.boxes.items
+package ca.cshawi.myinventory.boxes
 
 import android.os.Parcel
 import android.os.Parcelable
 
-data class Item(
-    var id: Int,
-    var name: String,
-    var description: String,
-    var currentAmount: Int = 0,
-    var maxAmount: Int = 0,
-    var barCode: Int,
-    var changedQuantity: Int
-) : Parcelable {
-    constructor(parcel: Parcel) : this(
-        parcel.readInt(),
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt()
-    ) {
+data class Item(var id: Int, var name: String, var description: String, var currentAmount: Int = 0, var maxAmount: Int = 0, var barCode: Int, var changedQuantity: Int) : Parcelable {
+    constructor(parcel: Parcel) : this(parcel.readInt(), parcel.readString(), parcel.readString(), parcel.readInt(), parcel.readInt(), parcel.readInt(), parcel.readInt()) {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

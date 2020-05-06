@@ -5,7 +5,6 @@
     <string name="nav_header_title">MyINVENTORY</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation title</string>
-    <string name="action_settings">Settings</string>
     <string name="nav_box_title">Armoire</string>
     <string name="nav_box_category_title">Armoires</string>
 </resources>

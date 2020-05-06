@@ -22,15 +22,15 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".ShowItemsActivity"
+                android:name=".activities.ShowItemsActivity"
                 android:label="@string/app_name"
                 android:theme="@style/AppTheme.NoActionBar" />
         <activity
-                android:name=".AddBoxActivity"
+                android:name=".activities.AddBoxActivity"
                 android:label="@string/app_name"
                 android:theme="@style/AppTheme.NoActionBar" />
         <activity
-                android:name=".AddItemActivity"
+                android:name=".activities.AddItemActivity"
                 android:label="@string/app_name"
                 android:theme="@style/AppTheme.NoActionBar" />
     </application>

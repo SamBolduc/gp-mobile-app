@@ -1,4 +1,4 @@
-package ca.cshawi.myinventory
+package ca.cshawi.myinventory.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
 import android.widget.EditText
+import ca.cshawi.myinventory.R
 import ca.cshawi.myinventory.api.APIService
 import ca.cshawi.myinventory.api.ActionResponse
 import ca.cshawi.myinventory.api.requests.AddItemRequest
@@ -41,44 +42,20 @@ class AddItemActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
             val maxAmount = findViewById<EditText>(R.id.new_item_max_quantity).text.toString()
             val barCode = findViewById<EditText>(R.id.new_item_barCode).text.toString()
 
-            APIService.INSTANCE.addItem(
-                "/boxes/${box.id}/newItem",
-                AddItemRequest(
-                    name,
-                    description,
-                    currentAmount.toInt(),
-                    maxAmount.toInt(),
-                    barCode.toInt()
-                ).toString()
-            )
-                .enqueue(object :
-                    Callback<ActionResponse> {
-                    override fun onFailure(call: Call<ActionResponse>, t: Throwable) {
-                        t.printStackTrace()
-                    }
+            APIService.INSTANCE.addItem("/boxes/${box.id}/newItem", AddItemRequest(name, description, currentAmount.toInt(), maxAmount.toInt(), barCode.toInt()).toString()).enqueue(object : Callback<ActionResponse> {
+                override fun onFailure(call: Call<ActionResponse>, t: Throwable) {
+                    t.printStackTrace()
+                }
 
-                    override fun onResponse(
-                        call: Call<ActionResponse>,
-                        response: Response<ActionResponse>
-                    ) {
-                        Snackbar.make(
-                            view,
-                            "L'objet a été ajouté avec succès.",
-                            Snackbar.LENGTH_LONG
-                        ).setAction("Quitter") { onBackPressed() }.show()
-                    }
-                });
+                override fun onResponse(call: Call<ActionResponse>, response: Response<ActionResponse>) {
+                    Snackbar.make(view, "L'objet a été ajouté avec succès.", Snackbar.LENGTH_LONG).setAction("Quitter") { onBackPressed() }.show()
+                }
+            });
         }
 
 
         setSupportActionBar(toolbar)
-        val toggle = ActionBarDrawerToggle(
-            this,
-            drawer_layout,
-            toolbar,
-            R.string.navigation_drawer_open,
-            R.string.navigation_drawer_close
-        )
+        val toggle = ActionBarDrawerToggle(this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
         nav_view.setNavigationItemSelectedListener(this)
