@@ -1,22 +1,24 @@
 package ca.cshawi.myinventory
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.support.design.widget.NavigationView
+import android.support.design.widget.Snackbar
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.helper.ItemTouchHelper
 import android.view.MenuItem
 import ca.cshawi.myinventory.api.APIService
 import ca.cshawi.myinventory.api.ActionResponse
 import ca.cshawi.myinventory.api.requests.UpdateItemsRequest
 import ca.cshawi.myinventory.boxes.Box
 import ca.cshawi.myinventory.boxes.items.ItemAdapter
-import ca.cshawi.myinventory.boxes.items.ItemSwipeController
+import ca.cshawi.myinventory.swipe.SwipeHelper
+import ca.cshawi.myinventory.swipe.SwipeHelper.UnderlayButtonClickListener
 import com.leinardi.android.speeddial.SpeedDialActionItem
 import com.leinardi.android.speeddial.SpeedDialView
 import kotlinx.android.synthetic.main.activity_main.*
@@ -33,7 +35,7 @@ class ShowItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
     lateinit var box: Box
 
     private val speedDial: SpeedDialView by lazy { findViewById<SpeedDialView>(R.id.speedDial) }
-
+    private lateinit var swipeHelper: SwipeHelper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -135,9 +137,62 @@ class ShowItemsActivity : AppCompatActivity(), NavigationView.OnNavigationItemSe
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
-        val swipeController = ItemSwipeController()
-        val touchHelper = ItemTouchHelper(swipeController)
-        touchHelper.attachToRecyclerView(recyclerView)
+//        val swipeController = ItemSwipeController()
+//        val touchHelper = ItemTouchHelper(swipeController)
+//        touchHelper.attachToRecyclerView(recyclerView)
+
+        swipeHelper = object : SwipeHelper(this, recyclerView) {
+            override fun instantiateUnderlayButton(
+                viewHolder: RecyclerView.ViewHolder,
+                underlayButtons: MutableList<UnderlayButton>
+            ) {
+                underlayButtons.add(UnderlayButton(
+                    "Supprimer",
+                    0,
+                    Color.parseColor("#FF3C30"),
+                    UnderlayButtonClickListener {
+                        Snackbar.make(
+                            viewHolder.itemView,
+                            "Ëtes-vous certain de vouloir supprimer cet objet?",
+                            Snackbar.LENGTH_LONG
+                        )
+                            .setCallback(object : Snackbar.Callback() {
+                                override fun onDismissed(
+                                    transientBottomBar: Snackbar?,
+                                    event: Int
+                                ) {
+                                    if (event != DISMISS_EVENT_TIMEOUT) return
+
+                                    APIService.INSTANCE.delItem(
+                                        "/boxes/${box.id}/item/${adapter.items[it].id}"
+                                    )
+                                        .enqueue(object :
+                                            Callback<ActionResponse> {
+                                            override fun onFailure(
+                                                call: Call<ActionResponse>,
+                                                t: Throwable
+                                            ) {
+                                                t.printStackTrace()
+                                            }
+
+                                            override fun onResponse(
+                                                call: Call<ActionResponse>,
+                                                response: Response<ActionResponse>
+                                            ) {
+                                                adapter.notifyDataSetChanged()
+                                            }
+                                        })
+                                    adapter.notifyDataSetChanged()
+                                }
+                            })
+                            .setAction("Annuler") {
+                                adapter.notifyDataSetChanged()
+                            }
+                            .show()
+                    }
+                ))
+            }
+        }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

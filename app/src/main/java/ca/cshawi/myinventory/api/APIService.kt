@@ -17,7 +17,6 @@ interface APIService {
     @POST("/boxes/items")
     fun updateItems(@Field("data") body: String): Call<ActionResponse>
 
-
     @FormUrlEncoded
     @POST("/boxes/new")
     fun addBox(@Field("data") body: String): Call<ActionResponse>
@@ -25,6 +24,9 @@ interface APIService {
     @FormUrlEncoded
     @POST
     fun addItem(@Url url: String, @Field("data") body: String): Call<ActionResponse>
+
+    @DELETE
+    fun delItem(@Url url: String): Call<ActionResponse>
 
     companion object {
 

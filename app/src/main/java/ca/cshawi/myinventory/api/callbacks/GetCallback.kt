@@ -38,7 +38,6 @@ class GetCallback() : Callback<List<Box>> {
                 }
 
                 activity.adapter.items = activity.box.items
-                activity.adapter.notifyDataSetChanged();
             }
         }
     }
